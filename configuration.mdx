@@ -1,0 +1,156 @@
+---
+title: Configuration
+description: Configure your Manu Documentation workspace and project settings
+---
+
+## Workspace Setup
+
+You configure your Manu Documentation workspace to match your organization's structure. Start by creating a workspace and inviting team members.
+
+<Steps>
+  <Step title="Create Workspace" icon="plus">
+    Create a new workspace with a unique name and description.
+  </Step>
+  <Step title="Invite Members" icon="users">
+    Invite team members and assign appropriate roles.
+  </Step>
+  <Step title="Set Permissions" icon="shield">
+    Configure access permissions for different user roles.
+  </Step>
+</Steps>
+
+## Project Organization
+
+You organize documentation into projects for better management. Each project can contain multiple documents and have its own settings.
+
+<Columns cols={2}>
+  <Card title="Project Settings" icon="settings" href="#project-settings">
+    Configure project-specific options and preferences.
+  </Card>
+  <Card title="Document Structure" icon="folder" href="#document-structure">
+    Organize documents with folders and categories.
+  </Card>
+</Columns>
+
+## Project Settings
+
+You customize each project with specific settings that control behavior and appearance. These settings apply to all documents within the project.
+
+<Tabs>
+  <Tab title="General" icon="settings">
+    Basic project information and metadata.
+    
+    <ParamField path="name" param-type="string" required="true">
+      Unique project name.
+    </ParamField>
+    
+    <ParamField path="description" param-type="string" required="false">
+      Brief description of the project.
+    </ParamField>
+  </Tab>
+  <Tab title="Access" icon="lock">
+    Control who can view and edit the project.
+    
+    <ParamField query="visibility" param-type="string" required="true">
+      Public, private, or team-only access.
+    </ParamField>
+  </Tab>
+  <Tab title="Integrations" icon="plug">
+    Connect external tools and services.
+    
+    <ParamField body="webhook_url" param-type="string" required="false">
+      URL for webhook notifications.
+    </ParamField>
+  </Tab>
+</Tabs>
+
+## Document Structure
+
+You structure your documents using folders and categories for easy navigation. This hierarchical organization helps users find content quickly.
+
+<CodeGroup tabs="JSON,YAML">
+  ```json
+{
+  "structure": {
+    "api-docs": {
+      "endpoints": [
+        "users",
+        "projects",
+        "documents"
+      ],
+      "guides": [
+        "authentication",
+        "rate-limits"
+      ]
+    },
+    "user-guides": {
+      "getting-started": [
+        "setup",
+        "first-project"
+      ]
+    }
+  }
+}
+  ```
+  ```yaml
+structure:
+  api-docs:
+    endpoints:
+      - users
+      - projects
+      - documents
+    guides:
+      - authentication
+      - rate-limits
+  user-guides:
+    getting-started:
+      - setup
+      - first-project
+  ```
+</CodeGroup>
+
+## Custom Domains
+
+You configure custom domains for branded documentation sites. This enhances your professional appearance and improves SEO.
+
+<Steps>
+  <Step title="Purchase Domain" icon="globe">
+    Purchase a domain from a registrar.
+  </Step>
+  <Step title="Configure DNS" icon="settings">
+    Point the domain to Manu Documentation's servers.
+  </Step>
+  <Step title="SSL Certificate" icon="shield">
+    Enable SSL for secure HTTPS access.
+  </Step>
+</Steps>
+
+<Callout kind="tip">Use subdomains like docs.yourcompany.com for documentation.</Callout>
+
+## Environment Variables
+
+You configure environment-specific settings using variables. This allows different configurations for development, staging, and production.
+
+<ExpandableGroup>
+  <Expandable title="Development Settings" default-open="false">
+    Configure settings for local development environment.
+  </Expandable>
+  <Expandable title="Staging Settings" default-open="false">
+    Test configurations in a staging environment.
+  </Expandable>
+  <Expandable title="Production Settings" default-open="false">
+    Final production-ready configurations.
+  </Expandable>
+</ExpandableGroup>
+
+## Backup and Recovery
+
+You set up automatic backups and recovery procedures to protect your documentation. Regular backups ensure you never lose important content.
+
+<Update label="2024-09-15" description="Backup Improvements" tags={["feature", "improvement"]}>
+## Enhanced Backup Features
+
+- Automated daily backups
+- Point-in-time recovery
+- Cross-region replication for redundancy
+</Update>

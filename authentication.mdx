@@ -1,0 +1,134 @@
+---
+title: Authentication
+description: Learn how to authenticate with Manu Documentation API
+---
+
+## Authentication Methods
+
+Manu Documentation supports multiple authentication methods to secure your documentation space. You choose the method that best fits your organization's security requirements and workflow.
+
+<Tabs>
+  <Tab title="API Keys" icon="key">
+    Use API keys for programmatic access to the Manu Documentation API.
+    
+    <Steps>
+      <Step title="Generate Key" icon="plus">
+        Go to your account settings and generate a new API key.
+      </Step>
+      <Step title="Store Securely" icon="lock">
+        Store the API key securely in your environment variables.
+      </Step>
+      <Step title="Include in Requests" icon="send">
+        Include the API key in the Authorization header of your requests.
+      </Step>
+    </Steps>
+    
+    <Callout kind="info">Rotate API keys regularly for enhanced security.</Callout>
+  </Tab>
+  <Tab title="OAuth" icon="shield">
+    Use OAuth 2.0 for user-based authentication with third-party providers.
+    
+    <Expandable title="Supported Providers" default-open="false">
+      We support Google, GitHub, and Microsoft OAuth providers.
+    </Expandable>
+  </Tab>
+  <Tab title="JWT Tokens" icon="file-text">
+    Use JSON Web Tokens for stateless authentication in distributed systems.
+  </Tab>
+</Tabs>
+
+## API Key Authentication
+
+You authenticate API requests using Bearer token authentication with your API key. Include the key in the Authorization header for all API calls.
+
+<CodeGroup tabs="curl,JavaScript,Python">
+  ```bash
+curl -X GET \
+  https://api.manudocs.com/v1/documents \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+  ```
+  ```javascript
+const response = await fetch('https://api.manudocs.com/v1/documents', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${process.env.MANU_API_KEY}`,
+    'Content-Type': 'application/json'
+  }
+});
+
+const documents = await response.json();
+console.log(documents);
+```
+  ```python
+import requests
+
+headers = {
+    'Authorization': f'Bearer {os.environ["MANU_API_KEY"]}',
+    'Content-Type': 'application/json'
+}
+
+response = requests.get('https://api.manudocs.com/v1/documents', headers=headers)
+documents = response.json()
+print(documents)
+```
+</CodeGroup>
+
+## OAuth Flow
+
+For OAuth authentication, you redirect users to the authorization endpoint. After authorization, you receive an access token for API calls.
+
+<Steps>
+  <Step title="Redirect to Auth" icon="external-link">
+    Redirect users to `https://api.manudocs.com/oauth/authorize` with client ID and scope.
+  </Step>
+  <Step title="User Approves" icon="check">
+    User approves the authorization request.
+  </Step>
+  <Step title="Receive Token" icon="download">
+    Receive authorization code and exchange for access token.
+  </Step>
+  <Step title="Use Token" icon="key">
+    Use the access token in subsequent API requests.
+  </Step>
+</Steps>
+
+## Security Best Practices
+
+You implement several security measures to protect your documentation space. Always use HTTPS for all API communications and never expose API keys in client-side code.
+
+<Callout kind="alert">Never commit API keys to version control systems.</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Key Rotation" default-open="false">
+    Rotate API keys every 90 days and revoke compromised keys immediately.
+  </Expandable>
+  <Expandable title="IP Whitelisting" default-open="false">
+    Restrict API access to specific IP addresses for additional security.
+  </Expandable>
+  <Expandable title="Rate Limiting" default-open="false">
+    Implement rate limiting to prevent abuse and ensure fair usage.
+  </Expandable>
+</ExpandableGroup>
+
+## Troubleshooting
+
+If you encounter authentication issues, check these common problems. Most authentication errors stem from incorrect API key usage or expired tokens.
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| 401 Unauthorized | Invalid API key | Verify API key is correct and active |
+| 403 Forbidden | Insufficient permissions | Check user roles and permissions |
+| Token expired | JWT token expired | Refresh token or re-authenticate |
+
+## Rate Limits
+
+Manu Documentation enforces rate limits to ensure fair usage. You monitor your API usage through the dashboard and upgrade plans for higher limits.
+
+<Update label="2024-10-01" description="Rate Limit Updates" tags={["improvement", "security"]}>
+## Rate Limit Changes
+
+- Increased rate limits for enterprise plans
+- Added detailed rate limit headers in responses
+- Improved error messages for rate limit exceeded
+</Update>

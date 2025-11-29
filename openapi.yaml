@@ -1,0 +1,177 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Manu Documentation API
+  license:
+    name: MIT
+servers:
+  - url: https://api.manudocs.com/v1
+paths:
+  /documents:
+    get:
+      summary: Retrieve a list of documents in the workspace. This endpoint allows you to fetch all documents or filter by project, status, or date range. You can use pagination to handle large result sets and sort by creation date or last modified timestamp. The response includes document metadata and basic content information.
+      operationId: listDocuments
+      parameters:
+        - name: limit
+          in: query
+          description: Number of documents to return, maximum 100
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Number of documents to skip for pagination
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Successful response with list of documents
+          headers:
+            x-next:
+              description: Link to next page of results
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Documents'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new document in the specified project. This endpoint allows you to add new documentation pages to your workspace with initial content and metadata. You can specify the document format, assign tags for organization, and set visibility permissions. The operation returns the created document with its unique identifier and timestamps.
+      operationId: createDocument
+      responses:
+        201:
+          description: Document created successfully
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents/{documentId}:
+    get:
+      summary: Retrieve detailed information about a specific document. This endpoint provides comprehensive document data including full content, metadata, version history, and associated resources. You can access previous versions by specifying version parameters and view change logs to track modifications over time.
+      operationId: getDocument
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          description: Unique identifier of the document to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Document details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Documents'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an existing document with new content or metadata. This endpoint allows you to modify document properties, replace content entirely, or make incremental changes. You can update title, description, tags, and visibility settings while preserving version history for audit purposes.
+      operationId: updateDocument
+      responses:
+        200:
+          description: Document updated successfully
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /projects:
+    get:
+      summary: List all projects in the user's workspace. This endpoint provides an overview of available projects with summary information including document counts, recent activity, and access permissions. You can filter projects by ownership, team membership, or activity status to manage large workspaces efficiently.
+      operationId: listProjects
+      responses:
+        200:
+          description: List of projects retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new project within the workspace. This endpoint establishes a new organizational container for documentation with customizable settings and permissions. You can define project scope, assign team members, and configure integration options during creation.
+      operationId: createProject
+      responses:
+        201:
+          description: Project created successfully
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Document:
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        project_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Documents:
+      type: array
+      items:
+        $ref: '#/components/schemas/Document'
+    Project:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        member_count:
+          type: integer
+        document_count:
+          type: integer
+    Projects:
+      type: array
+      items:
+        $ref: '#/components/schemas/Project'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

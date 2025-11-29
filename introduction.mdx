@@ -1,0 +1,96 @@
+---
+title: Introduction
+description: Overview of Manu Documentation and its core capabilities
+---
+
+## Getting Started
+
+Manu Documentation provides a centralized space for organizing and managing all your project documentation. You access your documentation through a user-friendly interface that supports multiple formats and integrations. The platform enables teams to collaborate efficiently on documentation without complex setups.
+
+<Columns cols={3}>
+  <Card title="Quick Setup" icon="rocket" href="authentication">
+    Set up your account and authenticate in minutes.
+  </Card>
+  <Card title="Organize Projects" icon="folder" href="configuration">
+    Configure workspaces and manage documentation structure.
+  </Card>
+  <Card title="API Integration" icon="code" href="api-integration">
+    Connect external tools and automate documentation workflows.
+  </Card>
+</Columns>
+
+## Key Features
+
+Manu Documentation offers powerful capabilities to streamline your documentation process. You can import existing docs from various sources and maintain them in one place.
+
+<Tabs>
+  <Tab title="Import" icon="download">
+    Import documents from GitHub repositories, Google Docs, or Confluence.
+    
+    <Steps>
+      <Step title="Connect Source" icon="link">
+        Connect your GitHub account or other source platform.
+      </Step>
+      <Step title="Select Repository" icon="folder">
+        Choose the repository containing your documentation.
+      </Step>
+      <Step title="Import Files" icon="upload">
+        Import Markdown files and other supported formats.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Collaborate" icon="users">
+    Collaborate with team members on documentation projects.
+    
+    <Expandable title="Team Permissions" default-open="false">
+      Assign roles like editor, viewer, or admin to control access levels.
+    </Expandable>
+  </Tab>
+  <Tab title="Publish" icon="globe">
+    Publish documentation to public URLs or internal networks.
+    
+    <Callout kind="tip">Use custom domains for branded documentation sites.</Callout>
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+You can use Manu Documentation for various scenarios depending on your project needs. Whether you're building developer tools or managing internal knowledge bases, the platform adapts to your workflow.
+
+<ExpandableGroup>
+  <Expandable title="Developer Documentation" default-open="true">
+    Create comprehensive API documentation with interactive examples and automated testing.
+  </Expandable>
+  <Expandable title="Product Documentation" default-open="false">
+    Maintain user guides, tutorials, and release notes for your products.
+  </Expandable>
+  <Expandable title="Knowledge Management" default-open="false">
+    Build internal wikis and knowledge bases for your organization.
+  </Expandable>
+</ExpandableGroup>
+
+## Getting Help
+
+If you encounter issues or need assistance, you can access our support resources. The platform includes built-in help and community forums.
+
+<CodeGroup tabs="JavaScript,Python">
+  ```javascript
+const client = new ManuClient({
+  apiKey: 'your-api-key'
+});
+
+await client.documents.import({
+  source: 'github',
+  repository: 'my-org/docs'
+});
+```
+  ```python
+from manu_client import ManuClient
+
+client = ManuClient(api_key='your-api-key')
+client.documents.import(
+    source='github',
+    repository='my-org/docs'
+)
+```
+</CodeGroup>

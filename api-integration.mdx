@@ -1,0 +1,194 @@
+---
+title: API Integration
+description: Integrate Manu Documentation with external tools and services
+---
+
+## Integration Overview
+
+You integrate Manu Documentation with various external tools to streamline your workflow. These integrations automate documentation updates and improve collaboration.
+
+<Columns cols={3}>
+  <Card title="GitHub" icon="github" href="#github-integration">
+    Sync documentation with GitHub repositories.
+  </Card>
+  <Card title="Slack" icon="message-square" href="#slack-integration">
+    Receive notifications in Slack channels.
+  </Card>
+  <Card title="Jira" icon="file-text" href="#jira-integration">
+    Link documentation to Jira issues.
+  </Card>
+</Columns>
+
+## GitHub Integration
+
+You connect GitHub repositories to automatically sync documentation changes. This keeps your docs up-to-date with code changes.
+
+<Steps>
+  <Step title="Connect Repository" icon="link">
+    Authorize Manu Documentation to access your GitHub repository.
+  </Step>
+  <Step title="Configure Sync" icon="settings">
+    Set up automatic sync for specific branches and folders.
+  </Step>
+  <Step title="Monitor Changes" icon="eye">
+    Track documentation updates in real-time.
+  </Step>
+</Steps>
+
+<CodeGroup tabs="Webhook,API">
+  ```json
+{
+  "event": "push",
+  "repository": {
+    "name": "my-docs",
+    "owner": "my-org"
+  },
+  "commits": [
+    {
+      "modified": ["README.md", "api-docs/endpoints.md"],
+      "added": ["new-feature.md"],
+      "removed": ["deprecated.md"]
+    }
+  ]
+}
+  ```
+  ```javascript
+const github = new GitHubClient({
+  token: process.env.GITHUB_TOKEN
+});
+
+const syncResult = await github.syncDocs({
+  repo: 'my-org/my-docs',
+  branch: 'main',
+  folder: 'docs/'
+});
+
+console.log(`Synced ${syncResult.files.length} files`);
+```
+</CodeGroup>
+
+## Slack Integration
+
+You configure Slack notifications for documentation events. Get notified when team members make changes or when reviews are requested.
+
+<Tabs>
+  <Tab title="Notifications" icon="bell">
+    Set up notifications for various events.
+    
+    <ParamField body="channel" param-type="string" required="true">
+      Slack channel for notifications.
+    </ParamField>
+    
+    <ParamField body="events" param-type="array" required="true">
+      Events to notify about.
+    </ParamField>
+  </Tab>
+  <Tab title="Commands" icon="terminal">
+    Use Slack commands to interact with documentation.
+    
+    <Expandable title="Available Commands" default-open="false">
+      `/docs search`, `/docs create`, `/docs update`
+    </Expandable>
+  </Tab>
+</Tabs>
+
+## Jira Integration
+
+You link documentation to Jira issues for better project tracking. This creates a seamless workflow between development and documentation.
+
+<Callout kind="info">Jira integration requires admin permissions in both systems.</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Issue Linking" default-open="true">
+    Automatically link documentation pages to Jira issues.
+  </Expandable>
+  <Expandable title="Status Sync" default-open="false">
+    Sync documentation status with Jira issue status.
+  </Expandable>
+  <Expandable title="Comment Integration" default-open="false">
+    Add documentation comments to Jira issues.
+  </Expandable>
+</ExpandableGroup>
+
+## Webhook Configuration
+
+You set up webhooks to receive real-time notifications about documentation changes. Webhooks enable custom integrations with your existing tools.
+
+<CodeGroup tabs="Express.js,Flask">
+  ```javascript
+const express = require('express');
+const app = express();
+
+app.post('/webhook/manu-docs', (req, res) => {
+  const { event, document, changes } = req.body;
+  
+  console.log(`Document ${document.title} was ${event}`);
+  
+  // Handle the webhook
+  if (event === 'updated') {
+    // Send notification or trigger CI/CD
+  }
+  
+  res.status(200).send('OK');
+});
+
+app.listen(3000);
+```
+  ```python
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/webhook/manu-docs', methods=['POST'])
+
+def handle_webhook():
+    data = request.get_json()
+    event = data['event']
+    document = data['document']
+    
+    print(f"Document {document['title']} was {event}")
+    
+    if event == 'updated':
+        # Send notification or trigger action
+        pass
+    
+    return 'OK', 200
+
+if __name__ == '__main__':
+    app.run(port=3000)
+```
+</CodeGroup>
+
+## API Endpoints
+
+You use specific API endpoints for integration purposes. These endpoints allow programmatic access to documentation features.
+
+<ResponseField name="id" field-type="string" required="true">
+  Unique identifier for the integration.
+</ResponseField>
+
+<ResponseField name="status" field-type="string" required="true">
+  Current status of the integration.
+</ResponseField>
+
+<ResponseField name="last_sync" field-type="string" required="false">
+  Timestamp of the last successful sync.
+</ResponseField>
+
+## Troubleshooting Integrations
+
+If integrations fail, you check these common issues. Most problems stem from authentication or configuration errors.
+
+| Integration | Common Issue | Solution |
+|-------------|--------------|----------|
+| GitHub | Permission denied | Check repository access permissions |
+| Slack | Token expired | Regenerate Slack bot token |
+| Jira | Connection timeout | Verify Jira server URL and credentials |
+
+<Update label="2024-08-20" description="Integration Updates" tags={["feature", "integration"]}>
+## New Integrations Added
+
+- Added support for Notion workspaces
+- Improved webhook retry logic
+- Enhanced error reporting for failed syncs
+</Update>
